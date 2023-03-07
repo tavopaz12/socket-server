@@ -1,8 +1,11 @@
-const io = require("socket.io")(8900, {
-  cors: {
-    origin: "http://149.28.215.217:3000",
-  },
-});
+const express = require("express");
+const http = require("http");
+const socketIo = require("socket.io");
+const path = require("path");
+
+const app = express();
+const server = http.createServer(app);
+const io = socketIo(server);
 
 let users = [];
 
@@ -38,4 +41,18 @@ io.on("connection", (socket) => {
     removeUser(socket.id);
     io.emit("getUsers", users);
   });
+});
+
+// Sirve la aplicación de React
+app.use(express.static(path.join(__dirname, "build")));
+
+// Envía todas las solicitudes a la aplicación de React
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
+
+// Inicia el servidor
+const port = process.env.PORT || 3000;
+server.listen(port, () => {
+  console.log(`Servidor iniciado en el puerto ${port}`);
 });
