@@ -35,6 +35,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
+    console.log('Un usuario desconectado')
     removeUser(socket.id);
     io.emit("getUsers", users);
   });
