@@ -1,5 +1,8 @@
-const http = require("http").createServer().listen(8900);
-const io = require("socket.io").listen(http);
+const io = require("socket.io")(8900, {
+  cors: {
+    origin: "https://tucanteach.ml",
+  },
+});
 
 let users = [];
 
@@ -17,7 +20,6 @@ const getUser = (userId) => {
 };
 
 io.on("connection", (socket) => {
-  console.log("Un usuario conectado");
   socket.on("addUser", (userId) => {
     addUser(userId, socket.id);
     io.emit("getUsers", users);
