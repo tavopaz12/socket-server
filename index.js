@@ -1,6 +1,6 @@
 const io = require("socket.io")(8900, {
   cors: {
-    origin: "https://tucanteach.ml",
+    origin: "http://localhost:3000",
   },
 });
 
@@ -32,11 +32,6 @@ io.on("connection", (socket) => {
       text,
       img,
     });
-  });
-
-  socket.on("logout", (userId) => {
-    removeUser(socket.id);
-    io.emit("getUsers", users);
   });
 
   socket.on("disconnect", () => {
