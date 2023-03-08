@@ -6,7 +6,7 @@ const cors = require("cors");
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server);
+const io = socketIo(server, { transports: ["websocket"] });
 app.use(cors());
 
 let users = [];
